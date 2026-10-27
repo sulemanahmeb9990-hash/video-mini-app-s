@@ -1,1 +1,193 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Video Zone BD</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #090a0e;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  padding: 20px 16px;
+  background: #101116;
+  border-bottom: 1px solid #252630;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h2 { margin: 0; font-size: 21px; }
+header span { color: #ff2464; }
+
+.container { padding: 16px; }
+
+.watch {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin: 8px 0 22px;
+  border: 0;
+  border-radius: 10px;
+  background: #2864ed;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.card {
+  background: #151722;
+  border: 1px solid #272a38;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+
+.thumb {
+  height: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #233e74, #85335c);
+  font-size: 55px;
+}
+
+.info { padding: 14px; }
+.info h3 { margin: 0 0 10px; font-size: 18px; }
+.meta { color: #9a9cac; font-size: 13px; }
+
+video {
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 10px;
+  display: none;
+}
+
+footer {
+  color: #888b9b;
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>FREE <span>VIDEO ZONE</span></h2>
+  <span>▶</span>
+</header>
+
+<main class="container">
+
+  <h3>🎬 জনপ্রিয় ভিডিও</h3>
+  <p class="meta">নতুন ভিডিও দেখুন</p>
+
+  <button class="watch" onclick="playVideo(0)">
+    ▶ Watch Video (0/5)
+  </button>
+
+  <div id="videos"></div>
+
+  <footer>
+    Free Video Zone BD · Video Library
+  </footer>
+
+</main>
+
+<script>
+const tg = window.Telegram?.WebApp;
+tg?.ready();
+tg?.expand();
+
+// পরীক্ষামূলক ভিডিও তালিকা
+// নিজের অনুমোদিত ভিডিওর তথ্য এখানে বসাবে।
+const videoList = [
+  {
+    title: "আমাদের প্রথম ভিডিও",
+    category: "নতুন",
+    views: "0",
+    duration: "Demo",
+    emoji: "🎬",
+    url: "https://www.w3schools.com/html/mov_bbb.mp4"
+  },
+  {
+    title: "দ্বিতীয় ভিডিও",
+    category: "বাংলা",
+    views: "0",
+    duration: "Demo",
+    emoji: "📺",
+    url: ""
+  }
+];
+
+const container = document.getElementById("videos");
+
+videoList.forEach((v, i) => {
+  const card = document.createElement("article");
+  card.className = "card";
+
+  const thumb = document.createElement("div");
+  thumb.className = "thumb";
+  thumb.textContent = v.emoji;
+
+  const info = document.createElement("div");
+  info.className = "info";
+
+  const title = document.createElement("h3");
+  title.textContent = v.title;
+
+  const meta = document.createElement("p");
+  meta.className = "meta";
+  meta.textContent =
+    v.category + " · " + v.views + " views · " + v.duration;
+
+  const button = document.createElement("button");
+  button.className = "watch";
+  button.textContent = "▶ Watch Video";
+
+  const player = document.createElement("video");
+  player.controls = true;
+  player.playsInline = true;
+  player.preload = "none";
+
+  button.onclick = () => {
+    if (!v.url) {
+      alert("এই ভিডিওর লিংক এখনো যোগ করা হয়নি।");
+      return;
+    }
+
+    player.src = v.url;
+    player.style.display = "block";
+    player.play().catch(() => {
+      alert("ভিডিও চালু হয়নি। আবার চেষ্টা করো।");
+    });
+  };
+
+  info.append(title, meta, button, player);
+  card.append(thumb, info);
+  container.append(card);
+});
+
+function playVideo(index) {
+  const firstButton =
+    container.querySelectorAll(".watch")[index];
+
+  if (firstButton) firstButton.click();
+}
+</script>
+
+</body>
+</html>
+
